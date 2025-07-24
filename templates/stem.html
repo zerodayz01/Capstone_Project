@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>College Discovery</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style15.css') }}">
+</head>
+<body>
+    <header>
+        <h2>College Discovery</h2>
+    </header>
+    <main>
+        <div class="topnav">
+            <a class="navbuttons" href="index.html">Home</a>
+            <a class="navbuttons" href="load.html">Access Tools</a>
+            <a class="navbuttons" href="resources.html">Resources</a>
+            <a class="navbuttons" href="more.html">Learn More</a>
+            <a class="navbuttons" href="about.html">About Us</a>
+            <a class="navbuttons" href="contact.html">Contact Universities</a>
+        </div>
+
+        <h1 class="text-box">STEM Majors</h1>
+        <div class="intro text-box" style="text-align: center;">
+         <ul>
+    <li>
+        </strong>STEM majors, encompassing disciplines in science, technology, engineering, and mathematics, are academic fields that emphasize critical thinking, problem-solving, and innovation. These programs equip students with a robust foundation in quantitative and analytical skills, preparing them for diverse careers in cutting-edge industries. 
+    </li>
+</ul>
+
+</div>
+<form action="/search" method="GET" class="search-form">
+<div style="display: flex; align-items: center;">
+    <input type="text" id="query" name="query" required style="width: 300px; padding: 10px; margin-right: 10px;">
+    <button type="submit" style="background-color: #333; color: #fff; padding: 10px 20px; font-size: 16px; font-weight: bold; border: none; cursor: pointer; border-radius: 5px;">Search</button>
+</div>
+</form>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.querySelector('form');
+        const resultsDiv = document.getElementById('results');
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const query = document.getElementById('query').value;
+
+            fetch(`/search?query=${query}`)
+                .then(response => response.json())
+                .then(data => {
+                    const results = data.results;
+                    resultsDiv.innerHTML = '';
+
+                    if (results.length > 0) {
+                        const table = document.createElement('table');
+                        table.innerHTML = "<tr><th>School Name</th><th>Biology</th><th>Engineering</th><th>CS/IT</th><th>Soc-Science</th><th>Math</th><th>Phys-Science</th><th>Arch.</th></tr>";
+
+                        results.forEach(result => {
+                            const row = table.insertRow(-1);
+
+                            const cellName = row.insertCell(0);
+                            const cellBio = row.insertCell(1);
+                            const cellEng = row.insertCell(2);
+                            const cellCS = row.insertCell(3);
+                            const cellSC = row.insertCell(4);
+                            const cellMath = row.insertCell(5);
+                            const cellPS = row.insertCell(6);
+                            const cellAR = row.insertCell(7);
+
+                            cellName.innerHTML = result.school.name || 'N/A';
+                            cellBio.innerHTML = result.latest.academics.program.bachelors.biological === 1 ? 'Yes' : 'N/A';
+                            cellEng.innerHTML = result.latest.academics.program.bachelors.engineering === 1 ? 'Yes' : 'N/A';
+                            cellCS.innerHTML = result.latest.academics.program.bachelors.computer === 1 ? 'Yes' : 'N/A';
+                            cellSC.innerHTML = result.latest.academics.program.bachelors.social_science === 1 ? 'Yes' : 'N/A';
+                            cellMath.innerHTML = result.latest.academics.program.bachelors.mathematics === 1 ? 'Yes' : 'N/A';
+                            cellPS.innerHTML = result.latest.academics.program.bachelors.physical_science === 1 ? 'Yes' : 'N/A';
+                            cellAR.innerHTML = result.latest.academics.program.bachelors.architecture === 1 ? 'Yes' : 'N/A';
+                        });
+
+                        resultsDiv.appendChild(table);
+                    } else {
+                        resultsDiv.innerHTML = "<p>No results found.</p>";
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    resultsDiv.innerHTML = "<p>An error occurred while fetching data.</p>";
+                });
+        });
+    });
+</script>
+    <div id="results" class="styled-table"></div>
+    </main>
+
+    <footer class="footer">
+    <div class="footer-content">
+        <div class="footer-section">
+            <h2>Contact Us</h2>
+            <p>Email: <a href="mailto:info.collegediscovery@gmail.com">info.collegediscovery@gmail.com</a></p>
+            <p>Fax: 1(800)-456-789</p>
+            <p>Phone: 1(800)-456-789</p>
+        </div>
+        <div class="footer-section">
+        <h2>Alternative Options</h2>
+        <p><a href="https://www.forbes.com/advisor/education/trade-schools/guide-to-trade-school-vocational-programs/" target="_blank">Trade/Vocational School</a></p>
+        <p><a href="https://www.mass.gov/info-details/authorized-real-estate-schools" target="_blank">Authorized Real Estate Schools</a></p>
+        <p><a href="https://www.understood.org/en/articles/after-high-school-different-paths-to-success" target="_blank">Different Paths to Success</a></p>
+        </div>
+        <div class="footer-section">
+            <h2>Quick Links</h2>
+            <p><a href="index.html">Home</a></p>
+            <p><a href="load.html">Access Tools</a></p>
+            <p><a href="resources.html">Resources</a></p>
+        </div>
+    </div>
+    <div class="copyright">
+        &copy; 2023 College Discovery. All rights reserved.
+    </div>
+</footer>
+</body>
+</html>
